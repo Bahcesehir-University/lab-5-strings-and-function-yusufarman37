@@ -124,52 +124,72 @@ MyString MyString::substring(int start, int len) const {
     // TODO: Return a substring starting at 'start' with length 'len'
     // Throw std::out_of_range if start is invalid (negative or >= length)
     // Hint: Use std::string::substr()
-    if(start<0|| start <= static_cast<int>(data,length())){
-        throw out_of_range( " ");
+    if(start < 0 || start >= static_cast<int>(data.length())){
+        throw out_of_range("");
     }
-    return MyString(data.substr(start,len));
+    return MyString(data.substr(start, len));
 }
-
+ 
 // ---- String Manipulation ----
-
+ 
 MyString MyString::toUpperCase() const {
     // TODO: Return a NEW MyString with all characters converted to upper case
     // Hint: Use std::transform with ::toupper
     // Do NOT modify the original object
     string result = data;
-    transform( result.begin() , result.end(), result.begin, [](unsigned char c ) {return toupper (c);})
+    transform(result.begin(), result.end(), result.begin(), 
+    [](unsigned char c)  {return toupper(c);});
     return MyString(result);
 }
-
+ 
 MyString MyString::toLowerCase() const {
     // TODO: Return a NEW MyString with all characters converted to lower case
     // Hint: Use std::transform with ::tolower
     // Do NOT modify the original object
-    string result = data ;
-    transform(result.begin() ; result.end() , result.begin(),
-    [](unsigned char c){return tolower(c);});
+    string result = data;
+    transform(result.begin(), result.end(), result.begin(), 
+    [](unsigned char c)  {return tolower(c);});
+    return MyString(result);
 }
-
+ 
 MyString MyString::trim() const {
     // TODO: Return a NEW MyString with leading and trailing whitespace removed
     // Whitespace includes: space, tab (\t), newline (\n), carriage return (\r)
     // Hint: Use find_first_not_of and find_last_not_of
-    size_t start _ data.find_first_not_of(" \t\n\r");
-    if(start == string::npos)return -1;
-    size_t end = data.find_last_not(" \t\n\r");
-    return MyString(data.substr(start;end-start+1));
+    size_t start = data.find_first_not_of(" \t\n\r");
+    if(start == string::npos) return MyString("");
+    size_t end = data.find_last_not_of(" \t\n\r");
+    return MyString(data.substr(start, (end - start +1)));
 }
-
+ 
 MyString MyString::reverse() const {
     // TODO: Return a NEW MyString with characters in reverse order
     // Hint: Use std::reverse on a copy
     string result = data;
-    std::reverse (result.begin() , result.end());
+    std :: reverse(result.begin(), result.end());
     return MyString(result);
 }
-
+ 
 // ---- Search Operations ----
-
+ 
+int MyString::find(const MyString& target) const {
+    // TODO: Return index of first occurrence of target, or -1 if not found
+    // Hint: Use std::string::find, check against string::npos
+    size_t pos = data.find(target.data);
+    if(pos == string::npos) return -1;
+    return static_cast<int>(pos);
+}
+ 
+int MyString::count(char ch) const {
+    // TODO: Return the number of occurrences of character ch in the string
+    int cnt = 0;
+    for(char c : data) {
+        if (c == ch) {
+            cnt++;
+        }
+    }
+    return cnt;
+}
 // ---- Function Overloading: append ----
  
 MyString MyString::append(const MyString& other) const {
